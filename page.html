@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国家重点实验室智能解决方案技术架构</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        .card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .mermaid-container {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-6">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">国家重点实验室智能解决方案技术架构</h1>
+
+        <div class="card mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block mb-2 font-medium text-gray-700">大模型规模</label>
+                    <select id="modelSize" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="small">基础版</option>
+                        <option value="medium" selected>标准版</option>
+                        <option value="large">高级版</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block mb-2 font-medium text-gray-700">Agent数量</label>
+                    <input type="range" id="agentCount" min="1" max="8" value="4" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                    <div id="agentCountValue" class="text-center mt-2 text-gray-700">4个智能体</div>
+                </div>
+
+                <div>
+                    <label class="block mb-2 font-medium text-gray-700">数据流复杂度</label>
+                    <select id="dataFlow" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="simple">简单</option>
+                        <option value="medium">中等</option>
+                        <option value="complex" selected>复杂</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="p-4">
+                <div class="mermaid-container">
+                    <div class="mermaid">
+                        graph TD
+                          subgraph 数据接入层
+                            A[实验室业务系统] --> B[iDLM工业大模型]
+                            C[科研数据库] --> B
+                            D[实验仪器数据] --> B
+                          end
+
+                          subgraph iDLM大模型层
+                            B --> E[预训练模型]
+                            B --> F[领域微调模型]
+                            B --> G[知识图谱]
+                          end
+
+                          subgraph Agentic系统层
+                            E --> H[数据清洗Agent]
+                            F --> I[信息抽取Agent]
+                            G --> J[知识推理Agent]
+                            H --> K[报告生成Agent]
+                            I --> K
+                            J --> K
+                          end
+
+                          subgraph 应用层
+                            K --> L[论文生成]
+                            K --> M[专利撰写]
+                            K --> N[标准制定]
+                          end
+
+                          style A fill:#f9f,stroke:#333,stroke-width:2px
+                          style B fill:#ff9,stroke:#333,stroke-width:2px
+                          style K fill:#9f9,stroke:#333,stroke-width:2px
+                          style L fill:#6cf,stroke:#333,stroke-width:2px
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化Mermaid
+        mermaid.initialize({ startOnLoad: true });
+
+        // 处理Agent数量滑块
+        const agentCountSlider = document.getElementById('agentCount');
+        const agentCountValue = document.getElementById('agentCountValue');
+
+        agentCountSlider.addEventListener('input', function() {
+            agentCountValue.textContent = `${this.value}个智能体`;
+        });
+
+        // 可以在这里添加更多交互逻辑，比如根据选择更新图表
+        const modelSizeSelect = document.getElementById('modelSize');
+        const dataFlowSelect = document.getElementById('dataFlow');
+
+        modelSizeSelect.addEventListener('change', function() {
+            // 这里可以添加更新图表的逻辑
+            console.log('大模型规模变更为:', this.value);
+        });
+
+        dataFlowSelect.addEventListener('change', function() {
+            // 这里可以添加更新图表的逻辑
+            console.log('数据流复杂度变更为:', this.value);
+        });
+    </script>
+</body>
+</html>
